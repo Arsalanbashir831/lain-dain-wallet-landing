@@ -1,0 +1,7 @@
+FROM nginx:1.27-alpine
+
+COPY deploy/nginx.conf /etc/nginx/conf.d/default.conf
+COPY index.html privacy.html terms.html delete-account.html robots.txt sitemap.xml /usr/share/nginx/html/
+COPY assets /usr/share/nginx/html/assets
+COPY css /usr/share/nginx/html/css
+COPY js /usr/share/nginx/html/js

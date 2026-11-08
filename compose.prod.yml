@@ -1,0 +1,24 @@
+name: lain-dain-landing
+
+# Deploy on the VPS with:
+#   docker compose -f compose.prod.yml up -d --build
+
+services:
+  landing:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: lain-dain-landing:latest
+    container_name: lain-dain-landing
+    # Useful for VPS-local diagnostics. Public traffic must arrive through
+    # the existing Nginx container on the shared proxy network.
+    ports:
+      - "127.0.0.1:${LANDING_PORT:-3001}:80"
+    restart: unless-stopped
+    networks:
+      - lain-dain-proxy
+
+networks:
+  lain-dain-proxy:
+    name: lain-dain-proxy
+    external: true

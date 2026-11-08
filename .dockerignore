@@ -1,0 +1,5 @@
+.git
+.vscode
+vercel.json
+compose.prod.yml
+Dockerfile
