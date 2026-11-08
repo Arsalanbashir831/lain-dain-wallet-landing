@@ -5,6 +5,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   initNavbarScroll();
   initAutoMockupCarousel();
+  initHeroSlides();
   initParallaxTilt();
   initStoreModal();
   initLegalToc();
@@ -90,6 +91,86 @@ function initAutoMockupCarousel() {
     phoneFrame.addEventListener('mouseenter', stopCarousel);
     phoneFrame.addEventListener('mouseleave', startCarousel);
   }
+}
+
+/**
+ * 2b. Mobile image slideshow (swipeable, auto-advances in sequence, loops)
+ */
+function initHeroSlides() {
+  const track = document.getElementById('heroSlidesTrack');
+  const dotsWrap = document.getElementById('heroSlidesDots');
+  if (!track || !dotsWrap) return;
+
+  const slides = Array.from(track.querySelectorAll('.hero-slide'));
+  const dots = Array.from(dotsWrap.querySelectorAll('.hero-slides-dot'));
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let current = 0;
+  let timerId = null;
+  let resumeId = null;
+
+  const isVisible = () => track.offsetParent !== null;
+
+  function goTo(index) {
+    const slide = slides[index];
+    if (!slide) return;
+    const left = slide.offsetLeft - (track.clientWidth - slide.offsetWidth) / 2;
+    track.scrollTo({ left, behavior: reduceMotion ? 'auto' : 'smooth' });
+  }
+
+  function setActive(index) {
+    current = index;
+    dots.forEach((dot, i) => dot.classList.toggle('is-active', i === index));
+  }
+
+  // Keep the active dot in sync with whichever slide is centred
+  let scrollRaf = null;
+  track.addEventListener('scroll', () => {
+    if (scrollRaf) return;
+    scrollRaf = requestAnimationFrame(() => {
+      scrollRaf = null;
+      const centre = track.scrollLeft + track.clientWidth / 2;
+      let nearest = 0;
+      let best = Infinity;
+      slides.forEach((slide, i) => {
+        const d = Math.abs(slide.offsetLeft + slide.offsetWidth / 2 - centre);
+        if (d < best) { best = d; nearest = i; }
+      });
+      if (nearest !== current) setActive(nearest);
+    });
+  }, { passive: true });
+
+  function start() {
+    if (timerId) return;
+    timerId = setInterval(() => {
+      if (!isVisible() || document.hidden) return;
+      goTo((current + 1) % slides.length);
+    }, 4000);
+  }
+
+  function stop() {
+    clearInterval(timerId);
+    timerId = null;
+  }
+
+  // Pause while the user is swiping, then resume
+  function pauseForInteraction() {
+    stop();
+    clearTimeout(resumeId);
+    resumeId = setTimeout(start, 6000);
+  }
+
+  track.addEventListener('pointerdown', pauseForInteraction, { passive: true });
+  track.addEventListener('touchstart', pauseForInteraction, { passive: true });
+
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      pauseForInteraction();
+      setActive(i);
+      goTo(i);
+    });
+  });
+
+  start();
 }
 
 /**

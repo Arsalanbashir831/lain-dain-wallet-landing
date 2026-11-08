@@ -454,6 +454,16 @@ button {
   height: 13px;
 }
 
+/* Mobile-only hero pieces (shown in the stacked layout breakpoint) */
+.hero-brand,
+.hero-heading-mobile,
+.hero-subheading-mobile,
+.hero-feature-grid,
+.hero-slides,
+.hero-wave {
+  display: none;
+}
+
 /* ==========================================================================
    Right Column: Phone Mockup & 3D Interactive Showcase
    ========================================================================== */
@@ -1028,6 +1038,17 @@ button {
    ========================================================================== */
 
 @media (max-width: 1080px) {
+  /* Hero carries the brand on mobile, so the top bar is dropped */
+  .page-home .navbar {
+    display: none;
+  }
+
+  .hero-section {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 2.25rem 0 0 0;
+  }
+
   .hero-grid {
     display: flex;
     flex-direction: column;
@@ -1041,39 +1062,298 @@ button {
     display: contents;
   }
 
-  .hero-heading {
+  /* 1. Brand block */
+  .hero-brand {
     order: 1;
-    max-width: 600px;
-    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
   }
 
-  .hero-subheading {
+  .hero-brand-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 18px;
+    flex-shrink: 0;
+  }
+
+  .hero-brand-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .hero-brand-title {
+    font-size: 2.35rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  .hero-brand-title .text-lain {
+    color: var(--primary-light);
+  }
+
+  .hero-brand-title .text-dain {
+    color: var(--secondary);
+  }
+
+  .hero-brand-tagline {
+    margin-top: 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #3F4741;
+  }
+
+  /* 2. Headline */
+  .hero-heading {
     order: 2;
-    max-width: 520px;
-    margin: 0 auto;
+    max-width: 600px;
+    margin: 0.5rem auto 0 auto;
+    font-size: clamp(1.85rem, 8.6vw, 3.4rem);
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+    color: #151515;
   }
 
-  /* Phone Mockup placed directly between paragraph and store buttons */
-  .hero-showcase-column {
-    order: 3;
+  .hero-heading-desktop {
+    display: none;
+  }
+
+  .hero-heading-mobile {
+    display: block;
+  }
+
+  .hh-line {
+    display: block;
+    white-space: nowrap;
+  }
+
+  .hh-accent {
+    color: var(--secondary);
+  }
+
+  .hh-underlined {
+    position: relative;
+    display: inline-block;
+  }
+
+  .hh-underline {
+    position: absolute;
+    left: 0;
+    bottom: -0.32em;
     width: 100%;
-    margin: 1rem 0;
+    height: 0.3em;
+    color: var(--secondary);
+    overflow: visible;
   }
 
-  /* Store download buttons placed directly below the mockup */
+  /* 3. Supporting copy */
+  .hero-subheading {
+    order: 3;
+    max-width: 30rem;
+    margin: 0.75rem auto 0 auto;
+    font-size: clamp(1.02rem, 4.2vw, 1.2rem);
+    line-height: 1.5;
+    color: #4E5550;
+  }
+
+  .hero-subheading-desktop {
+    display: none;
+  }
+
+  .hero-subheading-mobile {
+    display: block;
+  }
+
+  /* 4. Store buttons — sit directly above the phone mockup */
   .store-buttons-group {
     order: 4;
     width: 100%;
-    max-width: 440px;
+    max-width: 480px;
+    flex-direction: row;
+    flex-wrap: wrap;
     justify-content: center;
-    margin: 0 auto;
+    gap: 0.75rem;
+    margin: 0.5rem auto 0 auto;
   }
 
-  /* Feature tags placed at the bottom */
-  .features-mini-strip {
-    order: 5;
+  .btn-store {
+    flex: 1 1 150px;
     justify-content: center;
-    margin: 0.5rem auto 0 auto;
+    gap: 0.7rem;
+    padding: 0.85rem 1rem;
+    background: linear-gradient(180deg, #0C7A3D 0%, #01592B 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 10px 22px -8px rgba(1, 89, 43, 0.55);
+  }
+
+  .btn-store:hover {
+    background: linear-gradient(180deg, #0B683A 0%, #003D1D 100%);
+  }
+
+  .btn-store .store-icon-box,
+  .btn-store .store-icon-box svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .btn-store .store-caption {
+    font-size: 0.78rem;
+    text-transform: none;
+    letter-spacing: 0;
+    opacity: 0.92;
+  }
+
+  .btn-store .store-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  /* Phone mockup is desktop-only; mobile shows the plain image slideshow */
+  .hero-showcase-column {
+    display: none;
+  }
+
+  /* 6. Image slideshow (after the feature cards) */
+  .hero-slides {
+    order: 6;
+    display: block;
+    width: calc(100% + 3rem);
+    margin: 1.75rem -1.5rem 0 -1.5rem;
+  }
+
+  .hero-slides-track {
+    position: relative;
+    display: flex;
+    gap: 0.9rem;
+    padding: 0.5rem 14% 1.25rem 14%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .hero-slides-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hero-slide {
+    flex: 0 0 72%;
+    max-width: 340px;
+    height: auto;
+    aspect-ratio: 720 / 1561;
+    object-fit: cover;
+    border-radius: 22px;
+    scroll-snap-align: center;
+    box-shadow: 0 18px 36px -14px rgba(1, 89, 43, 0.35), 0 4px 12px rgba(18, 24, 20, 0.08);
+    background: var(--bg-subtle);
+  }
+
+  .hero-slides-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+  }
+
+  .hero-slides-dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border-radius: var(--radius-full);
+    background: rgba(1, 89, 43, 0.22);
+    cursor: pointer;
+    transition: width var(--transition-normal), background var(--transition-normal);
+  }
+
+  .hero-slides-dot.is-active {
+    width: 24px;
+    background: var(--primary);
+  }
+
+  /* 5. Feature cards (3 + 2 grid) */
+  .features-mini-strip {
+    display: none;
+  }
+
+  .hero-feature-grid {
+    order: 5;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 560px;
+    margin: 1rem auto 0 auto;
+    list-style: none;
+  }
+
+  .hero-feature-card {
+    flex: 0 0 calc((100% - 1.5rem) / 3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    padding: 1rem 0.5rem;
+    background: #E8F3EA;
+    border-radius: 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: #1A201C;
+  }
+
+  /* Bottom row is slightly wider, as in the design */
+  .hero-feature-card:nth-child(n+4) {
+    flex-basis: calc((100% - 1.5rem) / 3 * 1.12);
+  }
+
+  .hero-feature-card svg {
+    width: 34px;
+    height: 34px;
+    color: #128A3E;
+  }
+
+  /* 7. Wave flowing into the footer */
+  .hero-wave {
+    display: block;
+    width: 100%;
+    margin-top: 3rem;
+    line-height: 0;
+  }
+
+  .hero-wave svg {
+    display: block;
+    width: 100%;
+    height: clamp(90px, 24vw, 180px);
+    margin-bottom: -1px;
+  }
+
+  .page-home .footer {
+    background: #01692F;
+    border-top: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .page-home .footer-brand {
+    color: #FFFFFF;
+  }
+
+  .page-home .footer-copyright,
+  .page-home .footer-link-item a {
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  .page-home .footer-link-item a:hover {
+    color: var(--secondary);
   }
 
   .floating-badge {
@@ -1096,11 +1376,21 @@ button {
   }
 
   .hero-section {
-    padding: 1.25rem 0 2.5rem 0;
+    padding: 1.75rem 0 0 0;
   }
 
-  .hero-heading {
-    font-size: clamp(2rem, 8vw, 2.6rem);
+  .hero-brand-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+  }
+
+  .hero-brand-title {
+    font-size: 2.05rem;
+  }
+
+  .hero-brand-tagline {
+    font-size: 0.72rem;
   }
 
   .smartphone-frame {
@@ -1114,15 +1404,42 @@ button {
     border-radius: 32px;
   }
 
-  .store-buttons-group {
-    flex-direction: column;
-    width: 100%;
-    max-width: 320px;
+  .btn-store {
+    padding: 0.75rem 0.7rem;
+    gap: 0.55rem;
   }
 
-  .btn-store {
-    width: 100%;
-    justify-content: center;
+  .btn-store .store-icon-box,
+  .btn-store .store-icon-box svg {
+    width: 23px;
+    height: 23px;
+  }
+
+  .btn-store .store-caption {
+    font-size: 0.7rem;
+  }
+
+  .btn-store .store-title {
+    font-size: 1.05rem;
+  }
+
+  .hero-feature-grid {
+    gap: 0.6rem;
+  }
+
+  .hero-feature-card {
+    flex-basis: calc((100% - 1.2rem) / 3);
+    padding: 0.9rem 0.35rem;
+    font-size: 0.78rem;
+  }
+
+  .hero-feature-card:nth-child(n+4) {
+    flex-basis: calc((100% - 1.2rem) / 3 * 1.12);
+  }
+
+  .hero-feature-card svg {
+    width: 30px;
+    height: 30px;
   }
 
   .footer-container {
